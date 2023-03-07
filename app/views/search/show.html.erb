@@ -1,0 +1,24 @@
+<% if @status == 'error' %>
+  <div><%= @message %></div>
+<% else %>
+  <ul>
+    <% previable_count = 1 %>
+    <% @table_of_contents.each do |toc| %>
+      <li>
+        <% if toc["type"] == "front_matter" %>
+          <%= link_to toc["title"], "https://scholar.flatworldknowledge.com/books/#{params[:book_id]}/#{toc["element_id"]}/read?previewable" %>
+        <% else %>
+          <%= link_to "#{toc["ordinal_name"]} - #{toc["title"]}", "https://scholar.flatworldknowledge.com/books/#{params[:book_id]}/#{toc["element_id"]}/read#{previable_count <= 3 ? '?previewable' : ''}" %>
+          <% previable_count += 1 %>
+        <% end %>
+      </li>
+      <ul>
+        <% toc["sections"].each do |section| %>
+          <li>
+            <%= link_to "#{section["ordinal_name"]} - #{section["title"]}", "https://scholar.flatworldknowledge.com/books/#{params[:book_id]}/#{section["element_id"]}/read#{previable_count <= 4 ? '?previewable' : ''}" %> 
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+  </ul>
+<% end %>
